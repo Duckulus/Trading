@@ -15,7 +15,7 @@ public class Trade {
         };
     }
 
-    public Player[] getPlayerData() {
+    public Player[] getPlayers() {
         return new Player[]{
                 playerData[0].getPlayer(),
                 playerData[1].getPlayer()

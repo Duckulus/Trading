@@ -106,7 +106,7 @@ public class InventoryListener implements Listener {
         tradingManager.endTrade(trade);
         Player partner = trade.getPartnerData(player).getPlayer();
         partner.closeInventory();
-        for (Player tradePlayer : trade.getPlayerData()) {
+        for (Player tradePlayer : trade.getPlayers()) {
             tradePlayer.sendMessage(Messages.prefixed("trade.cancelled"));
         }
 
