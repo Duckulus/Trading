@@ -1,6 +1,7 @@
 package de.amin.trading.core;
 
 import de.amin.trading.core.data.Trade;
+import de.amin.trading.utils.Messages;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,9 +34,9 @@ public class TradingManager {
     public void endTrade(Trade trade) {
         if(trade==null)return;
         trades.remove(trade);
-        for (int i = 0; i < trade.getPlayers().length; i++) {
+        for (int i = 0; i < trade.getPlayerData().length; i++) {
             //give each player the items back he placed, validate if null for each item
-            trade.getPlayers()[i].getInventory().addItem(Arrays.stream(trade.getTradeData(trade.getPlayers()[i]).getItemStacks()).filter(Objects::nonNull).toArray(ItemStack[]::new));
+            trade.getPlayerData()[i].getInventory().addItem(Arrays.stream(trade.getTradeData(trade.getPlayerData()[i]).getItemStacks()).filter(Objects::nonNull).toArray(ItemStack[]::new));
         }
 
     }
@@ -43,14 +44,14 @@ public class TradingManager {
     public void finishTrade(Trade trade) {
         if(trade==null)return;
         trades.remove(trade);
-        Player player1 = trade.getPlayers()[0].getPlayer();
-        Player player2 = trade.getPlayers()[1].getPlayer();
+        Player player1 = trade.getPlayerData()[0].getPlayer();
+        Player player2 = trade.getPlayerData()[1].getPlayer();
         player1.getInventory().addItem(Arrays.stream(trade.getTradeData(player2).getItemStacks()).filter(Objects::nonNull).toArray(ItemStack[]::new));
         player2.getInventory().addItem(Arrays.stream(trade.getTradeData(player1).getItemStacks()).filter(Objects::nonNull).toArray(ItemStack[]::new));
 
-        for (Player player : trade.getPlayers()) {
+        for (Player player : trade.getPlayerData()) {
             player.closeInventory();
-            player.sendMessage("Trade finished!");
+            player.sendMessage(Messages.prefixed("trade.finished"));
         }
     }
 

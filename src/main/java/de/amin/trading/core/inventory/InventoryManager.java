@@ -5,7 +5,10 @@ import de.amin.trading.core.TradingManager;
 import de.amin.trading.core.data.Trade;
 import de.amin.trading.core.data.TradePhase;
 import de.amin.trading.core.data.TradePlayerData;
+import de.amin.trading.utils.ItemBuilder;
+import de.amin.trading.utils.Messages;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,7 +34,7 @@ public class InventoryManager {
         Trade trade = tradingManager.getTrade(player);
         Component partnerName = trade.getPartnerData(player).getPlayer().displayName();
         if (inventory == null) {
-            inventory = Bukkit.createInventory(new TradingHolder(), 9 * 4, Component.text("You              | ").append(partnerName));
+            inventory = Bukkit.createInventory(new TradingHolder(), 9 * 4, Messages.get("inventory.title", PlainTextComponentSerializer.plainText().serialize(partnerName)));
             inventories.put(player, inventory);
         }
         return inventory;
@@ -46,10 +49,10 @@ public class InventoryManager {
                 TradePlayerData partnerData = trade.getPartnerData(player);
 
                 for (int i : Slots.glass) {
-                    inventory.setItem(i, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
+                    inventory.setItem(i, new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(Messages.get("inventory.item.empty")).build());
                 }
                 for (int i : Slots.barrier) {
-                    inventory.setItem(i, new ItemStack(Material.BARRIER));
+                    inventory.setItem(i, new ItemBuilder(Material.BARRIER).setDisplayName(Messages.get("inventory.item.empty")).build());
                 }
                 for (int i = 0; i < Slots.ownItems.length; i++) {
                     inventory.setItem(Slots.ownItems[i], tradeData.getItemStacks()[i]);
@@ -61,11 +64,11 @@ public class InventoryManager {
                 inventory.setItem(Slots.partnerPhaseButton, new ItemStack(getItem(partnerData.getPhase())));
 
                 if (tradeData.getPhase().equals(TradePhase.LOCKED) && partnerData.getPhase().equals(TradePhase.LOCKED) && !tradeData.isFinalized()) {
-                    inventory.setItem(Slots.finalize, new ItemStack(Material.DIAMOND));
+                    inventory.setItem(Slots.finalize, new ItemBuilder(Material.DIAMOND).setDisplayName(Messages.get("inventory.item.finalize")).build());
                 } else if (tradeData.getPhase().equals(TradePhase.LOCKED) && partnerData.getPhase().equals(TradePhase.LOCKED) && tradeData.isFinalized()) {
-                    inventory.setItem(Slots.finalize, new ItemStack(Material.EMERALD));
+                    inventory.setItem(Slots.finalize, new ItemBuilder(Material.EMERALD).setDisplayName(Messages.get("inventory.item.finalized")).build());
                 } else {
-                    inventory.setItem(Slots.finalize, new ItemStack(Material.RED_STAINED_GLASS_PANE));
+                    inventory.setItem(Slots.finalize, new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setDisplayName(Messages.get("inventory.item.waiting")).build());
                 }
 
                 if(tradeData.isFinalized() && partnerData.isFinalized()) {
@@ -77,16 +80,16 @@ public class InventoryManager {
 
     }
 
-    private Material getItem(TradePhase phase) {
+    private ItemStack getItem(TradePhase phase) {
         switch (phase) {
             case EDITING -> {
-                return Material.GRAY_DYE;
+                return new ItemBuilder(Material.GRAY_DYE).setDisplayName(Messages.get("inventory.item.editing")).build();
             }
             case LOCKED -> {
-                return Material.LIME_DYE;
+                return new ItemBuilder(Material.LIME_DYE).setDisplayName(Messages.get("inventory.item.locked")).build();
             }
             default -> {
-                return Material.YELLOW_DYE;
+                return new ItemStack(Material.YELLOW_DYE);
             }
         }
     }

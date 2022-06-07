@@ -4,7 +4,7 @@ import de.amin.trading.core.TradingManager;
 import de.amin.trading.core.data.Trade;
 import de.amin.trading.core.data.TradePhase;
 import de.amin.trading.core.data.TradePlayerData;
-import org.bukkit.Material;
+import de.amin.trading.utils.Messages;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -54,10 +54,10 @@ public class InventoryListener implements Listener {
 
                 if (event.getCursor() != null && event.getClickedInventory().getItem(event.getSlot()) == null) {
                     tradeData.getItemStacks()[index(Slots.ownItems, slot)] = event.getCursor().clone();
-                    event.setCursor(null);
+                    event.getWhoClicked().setItemOnCursor(null);
                 }else if (event.getClickedInventory().getItem(event.getSlot()) != null) {
                     remove(tradeData.getItemStacks(), index(Slots.ownItems, slot));
-                    event.setCursor(event.getClickedInventory().getItem(event.getSlot()).clone());
+                    event.getWhoClicked().setItemOnCursor(event.getClickedInventory().getItem(event.getSlot()).clone());
                 }
                 event.setCancelled(true);
             } else if (tradeData.getPhase().equals(TradePhase.LOCKED)) {
@@ -106,8 +106,8 @@ public class InventoryListener implements Listener {
         tradingManager.endTrade(trade);
         Player partner = trade.getPartnerData(player).getPlayer();
         partner.closeInventory();
-        for (Player tradePlayer : trade.getPlayers()) {
-            tradePlayer.sendMessage("Trade cancelled");
+        for (Player tradePlayer : trade.getPlayerData()) {
+            tradePlayer.sendMessage(Messages.prefixed("trade.cancelled"));
         }
 
     }

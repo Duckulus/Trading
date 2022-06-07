@@ -1,0 +1,27 @@
+prefix: ""
+request:
+  sent: "&eRequest has been sent!"
+  received: "&eYou received a trade request by &6{0}&e!"
+trade:
+  finished: "&aTrade was succesfully finished!"
+  cancelled: "&cTrade was cancelled!"
+command:
+  trade:
+    usage: "&7Usage&8:&9 /trade request <player> | accept"
+    request:
+      usage: "&7Usage&8:&9 /trade request <player>"
+      error:
+        self: "&cYou can't request yourself."
+        offline: "&cPlayer not found"
+    accept:
+      error:
+        no_request: "&cYou don't have any pending requests."
+inventory:
+  title: "You              | {0}"
+  item:
+    empty: "&7"
+    editing: "&7EDITING"
+    locked: "&aLOCKED IN"
+    waiting: "&cWaiting for both players to lock in."
+    finalize: "&bClick to finalize trade."
+    finalized: "&aFinalized. Waiting for the other party."

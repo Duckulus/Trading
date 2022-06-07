@@ -5,6 +5,8 @@ import de.amin.trading.core.TradingManager;
 import de.amin.trading.core.inventory.InventoryListener;
 import de.amin.trading.core.inventory.InventoryManager;
 import de.amin.trading.core.request.TradingRequestManager;
+import de.amin.trading.utils.Messages;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class TradingPlugin extends JavaPlugin {
@@ -16,6 +18,9 @@ public class TradingPlugin extends JavaPlugin {
         TradingManager tradingManager = new TradingManager();
         InventoryManager inventoryManager = new InventoryManager(this, tradingManager);
         TradingRequestManager tradingRequestManager = new TradingRequestManager();
+
+        saveResource("messages.yml", false);
+        Messages.init(this);
 
         getCommand("trade").setExecutor(new TradeCommand(tradingManager,inventoryManager,tradingRequestManager));
         getServer().getPluginManager().registerEvents(new InventoryListener(tradingManager), this);

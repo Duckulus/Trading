@@ -1,5 +1,6 @@
 package de.amin.trading.core.request;
 
+import de.amin.trading.utils.Messages;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -13,8 +14,8 @@ public class TradingRequestManager {
     }
 
     public void sendRequest(Player sender, Player receiver) {
-        sender.sendMessage("Request sent");
-        receiver.sendMessage("Request received");
+        sender.sendMessage(Messages.prefixed("request.sent"));
+        receiver.sendMessage(Messages.prefixed("request.received", sender.getName()));
 
         requests.put(receiver, sender);
     }
