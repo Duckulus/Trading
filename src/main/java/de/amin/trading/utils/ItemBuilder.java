@@ -20,6 +20,11 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder setAmount(int amount) {
+        itemStack.setAmount(amount);
+        return this;
+    }
+
     public ItemStack build() {
         itemStack.setItemMeta(meta);
         return itemStack;

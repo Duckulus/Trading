@@ -41,7 +41,6 @@ public class InventoryManager {
     }
 
     public void updateInventories() {
-
         inventories.forEach((player, inventory) -> {
             Trade trade = tradingManager.getTrade(player);
             if (trade != null) {
@@ -71,8 +70,12 @@ public class InventoryManager {
                     inventory.setItem(Slots.finalize, new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setDisplayName(Messages.get("inventory.item.waiting")).build());
                 }
 
-                if(tradeData.isFinalized() && partnerData.isFinalized()) {
-                    tradingManager.finishTrade(trade);
+                if(trade.isTimerRunning()) {
+                    inventory.setItem(Slots.finalize, new ItemBuilder(Material.CLOCK).setDisplayName(Component.text(trade.getTimer())).setAmount(trade.getTimer()).build());
+                }
+
+                if(tradeData.isFinalized() && partnerData.isFinalized() && !trade.isTimerRunning()) {
+                    tradingManager.startTimer(trade);
                 }
             }
         });
