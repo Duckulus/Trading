@@ -1,3 +1,5 @@
+import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
+
 plugins {
     id("io.papermc.paperweight.userdev") version "1.3.7-SNAPSHOT"
     id("xyz.jpenilla.run-paper") version "1.0.6"
@@ -22,6 +24,13 @@ bukkit {
     commands {
         register("trade") {
             description = "Command for trading"
+            permission = "trading.trade"
+        }
+    }
+    permissions {
+        register("trading.trade") {
+            description = "Allows a Player to send and receive trading requests"
+            default = BukkitPluginDescription.Permission.Default.TRUE
         }
     }
 }
