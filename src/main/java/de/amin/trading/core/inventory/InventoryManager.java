@@ -16,6 +16,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class InventoryManager {
 
@@ -41,7 +43,13 @@ public class InventoryManager {
     }
 
     public void updateInventories() {
-        inventories.forEach((player, inventory) -> {
+        Iterator<Map.Entry<Player, Inventory>> iterator = inventories.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry<Player, Inventory> entry = iterator.next();
+
+            Player player = entry.getKey();
+            Inventory inventory = entry.getValue();
+
             Trade trade = tradingManager.getTrade(player);
             if (trade != null) {
                 TradePlayerData tradeData = trade.getTradeData(player);
@@ -77,10 +85,10 @@ public class InventoryManager {
                 if(tradeData.isFinalized() && partnerData.isFinalized() && !trade.isTimerRunning()) {
                     tradingManager.startTimer(trade);
                 }
+            } else {
+                iterator.remove();
             }
-        });
-
-
+        }
     }
 
     private ItemStack getItem(TradePhase phase) {

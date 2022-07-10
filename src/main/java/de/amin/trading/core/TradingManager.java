@@ -38,7 +38,9 @@ public class TradingManager {
     public void endTrade(Trade trade) {
         if (trade == null) return;
         trades.remove(trade);
-        trade.getTradeTask().cancel();
+        if(trade.getTradeTask()!=null) {
+            trade.getTradeTask().cancel();
+        }
         for (int i = 0; i < trade.getPlayers().length; i++) {
             //give each player the items back he placed, validate if null for each item
             trade.getPlayers()[i].getInventory().addItem(Arrays.stream(trade.getTradeData(trade.getPlayers()[i]).getItemStacks()).filter(Objects::nonNull).toArray(ItemStack[]::new));
