@@ -26,11 +26,11 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if(!event.getAction().equals(InventoryAction.PICKUP_ALL) && !event.getAction().equals(InventoryAction.PLACE_ALL)) {
-            event.setCancelled(true);
+        if (event.getClickedInventory() == null || !(event.getClickedInventory().getHolder() instanceof TradingHolder)) {
             return;
         }
-        if (event.getClickedInventory() == null || !(event.getClickedInventory().getHolder() instanceof TradingHolder)) {
+        if(!event.getAction().equals(InventoryAction.PICKUP_ALL) && !event.getAction().equals(InventoryAction.PLACE_ALL)) {
+            event.setCancelled(true);
             return;
         }
         Player player = (Player) event.getWhoClicked();
